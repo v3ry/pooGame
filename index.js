@@ -82,17 +82,41 @@ window.addEventListener("click",(event)=>{
 });
 
 //Fonction d'animation des ennemies et projectiles
-function animate(){
-    requestAnimationFrame(animate);
-
-    ctx.fillStyle = "rgba(0,0,0,1)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
+let animationId;
+function animate() {
+    animationId = requestAnimationFrame(animate);
+  
+    ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
     player.draw();
-
+  
     projectiles.forEach((projectile) => projectile.update());
-    enemies.forEach((enemy)=> enemy.update());
-}
+  
+    enemies.forEach((enemy, enemyIndex) => {
+      projectiles.forEach((projectile, projectileIndex) => {
+        const distance = Math.hypot(
+          projectile.x - enemy.x,
+          projectile.y - enemy.y
+        );
+        if (distance - projectile.radius - enemy.radius <= 0) {
+          console.log("touched");
+          setTimeout(() => {
+            enemies.splice(enemyIndex, 1);
+            projectiles.splice(projectileIndex, 1);
+          }, 0);
+        }
+      });
+      
+      const distPlayerEnemy = Math.hypot(player.x - enemy.x, player.y - enemy.y);
+      if (distPlayerEnemy - enemy.radius - player.radius <= 0) {
+          cancelAnimationFrame(animationId);
+      }
+  
+      enemy.update();
+  
+    });
+  }
 
 //Fonction faisant apparaitre les ennemie autour du joueur
 function spawnEnemies(){
