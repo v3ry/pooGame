@@ -91,7 +91,17 @@ function animate() {
   
     player.draw();
   
-    projectiles.forEach((projectile) => projectile.update());
+    projectiles.forEach((projectile,index) => {
+        if (
+            projectile.x - projectile.radius < 0 ||
+            projectile.x + projectile.radius > canvas.width ||
+            projectile.y - projectile.radius < 0 ||
+            projectile.y + projectile.radius > canvas.height
+          ) {
+            projectiles.splice(index, 1);
+          }
+        projectile.update();
+    });
   
     enemies.forEach((enemy, enemyIndex) => {
       projectiles.forEach((projectile, projectileIndex) => {
