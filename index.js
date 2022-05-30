@@ -111,7 +111,9 @@ function animate() {
         );
         if (distance - projectile.radius - enemy.radius <= 0) {
           if (enemy.radius -10 > 5){
-            enemy.radius -= 10;
+            gsap.to(enemy, {
+                radius: enemy.radius - 10,
+              });
             setTimeout(() => {
               projectiles.splice(projectileIndex, 1);
             }, 0);
