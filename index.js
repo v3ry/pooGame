@@ -110,12 +110,17 @@ function animate() {
           projectile.y - enemy.y
         );
         if (distance - projectile.radius - enemy.radius <= 0) {
-          console.log("touched");
+          if (enemy.radius -10 > 5){
+            enemy.radius -= 10;
+            setTimeout(() => {
+              projectiles.splice(projectileIndex, 1);
+            }, 0);
+          }else {
           setTimeout(() => {
             enemies.splice(enemyIndex, 1);
             projectiles.splice(projectileIndex, 1);
           }, 0);
-        }
+        }}
       });
       
       const distPlayerEnemy = Math.hypot(player.x - enemy.x, player.y - enemy.y);
